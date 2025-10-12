@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rushan Gaming - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #ff6b6b;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23302b63" width="1200" height="600"/><g fill="%23ff6b6b" opacity="0.1"><circle cx="200" cy="150" r="100"/><circle cx="800" cy="400" r="150"/><circle cx="1000" cy="200" r="80"/></g></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease;
+            color: #ddd;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1.2s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #ff6b6b;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ff6b6b;
+        }
+
+        .feature-card p {
+            color: #ccc;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 2px solid #ff6b6b;
+        }
+
+        footer p {
+            color: #aaa;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">Rushan Gaming</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to Rushan Gaming</h1>
+            <p>Your Ultimate Gaming Destination</p>
+            <a href="#games" class="cta-button">Start Playing</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="games">
+        <h2>What We Offer</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Latest Games</h3>
+                <p>Access the newest and most popular games across all genres. From action-packed adventures to strategic challenges.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Live Streaming</h3>
+                <p>Watch top gamers in action and learn from the best. Join live streams and interact with your favorite players.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Gaming Community</h3>
+                <p>Connect with fellow gamers, join tournaments, and build lasting friendships in our vibrant community.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Exclusive Content</h3>
+                <p>Get access to exclusive game reviews, tips, tricks, and behind-the-scenes content from developers.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Tournaments</h3>
+                <p>Compete in regular tournaments with exciting prizes. Test your skills against players worldwide.</p>
+            </div>
+            <div class="feature-card">
+                <h3>24/7 Support</h3>
+                <p>Our dedicated support team is always ready to help you with any gaming-related questions or issues.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Rushan Gaming. All rights reserved. Level Up Your Gaming Experience!</p>
+    </footer>
+</body>
+</html>
