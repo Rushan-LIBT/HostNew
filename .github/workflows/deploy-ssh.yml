@@ -13,6 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Clean target directory
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 13.229.36.76
+          username: root
+          key: ${{ secrets.RUSHAN_SECRCT }}
+          port: 22
+          script: |
+            # Clean the target directory but keep the folder
+            rm -rf /www/wwwroot/rushan.run.place/*
+            rm -rf /www/wwwroot/rushan.run.place/.[!.]*
+            echo "Target directory cleaned"
+
       - name: Copy all files to aaPanel server via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -23,7 +36,6 @@ jobs:
           source: "*"
           target: "/www/wwwroot/rushan.run.place/"
           overwrite: true
-          rm: true
 
       - name: Set correct permissions
         uses: appleboy/ssh-action@v1.0.3
