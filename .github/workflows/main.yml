@@ -1,55 +1,55 @@
-name: Deploy to Server
+name: Node.js Build & Deploy
 
 on:
   push:
     branches:
-      - main  # or your deployment branch
+      - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    # 1️⃣ Checkout repo
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js if needed for build
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20' # or your Node version
+    # 2️⃣ Setup Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
 
-      # Step 3: Install dependencies
-      - name: Install Dependencies
-        run: npm install
+    # 3️⃣ Install dependencies
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./HostNew  # <-- change this if your package.json is elsewhere
 
-      # Step 4: Build the project
-      - name: Build Project
-        run: npm run build
+    # 4️⃣ Build project
+    - name: Build project
+      run: npm run build
+      working-directory: ./HostNew
 
-      # Step 5: Deploy via SCP
-      - name: Copy files to server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}       # your server IP
-          username: ubuntu                       # server username
-          key: ${{ secrets.RUSHAN_SECRCT }}     # your private SSH key
-          port: 22
-          source: "dist/*"                       # folder/files to copy
-          target: "/home/ubuntu/app"             # destination on server
-          overwrite: true                        # overwrite existing files
+    # 5️⃣ Copy files to server
+    - name: Deploy via SCP
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_IP }}        # <-- Your server IP
+        username: ubuntu                      # <-- server username
+        key: ${{ secrets.RUSHAN_SECRET }}     # <-- Your private key from GitHub secrets
+        port: 22
+        source: "./HostNew/dist/**"           # <-- adjust to your build folder
+        target: "/home/ubuntu/HostNew"        # <-- server target folder
+        rm: true                              # remove existing files before copy
 
-      # Step 6: Run remote commands (optional, e.g., restart service)
-      - name: Restart server/service
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ubuntu
-          key: ${{ secrets.RUSHAN_SECRCT }}
-          port: 22
-          script: |
-            echo "Deployment Successful!"
-            cd /home/ubuntu/app
-            # Optional: restart app, e.g., PM2
-            # pm2 restart app || pm2 start app.js --name app
+    # 6️⃣ Optional: SSH command after deploy
+    - name: Run remote command
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ubuntu
+        key: ${{ secrets.RUSHAN_SECRET }}
+        port: 22
+        script: |
+          cd /home/ubuntu/HostNew
+          pm2 restart all || pm2 start npm --name "HostNew" -- start
