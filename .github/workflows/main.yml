@@ -1,41 +1,29 @@
 name: Deploy HTML Website
 
-# Trigger deployment on push to main branch
 on:
   push:
     branches:
-      - main
-#  workflow_dispatch:  # Allow manual trigger from GitHub UI
+      - main  # Trigger on pushes to the main branch
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup SSH key from GitHub Secret
-      - name: Setup SSH Key
+      - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.RUSHAN_SECRCT }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 13.229.36.76 >> ~/.ssh/known_hosts
 
-      # Step 3: Test SSH connection (optional but recommended)
-      - name: Test SSH Connection
+      - name: Test SSH connection
         run: |
           ssh -i ~/.ssh/id_rsa ubuntu@13.229.36.76 "echo 'SSH Connection Successful!'"
 
-      # Step 4: Copy HTML files to server
-      - name: Deploy HTML via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: 13.229.36.76
-          username: ubuntu
-          key: ${{ secrets.RUSHAN_SECRCT }}
-          port: 22
-          source: "./*"                # All files in repo root
-          target: "/www/wwwroot/rushan.run.place"
-          overwrite: true
+      - name: Deploy files via SCP
+        run: |
+          scp -i ~/.ssh/id_rsa -r ./ ubuntu@13.229.36.76:/www/wwwroot/rushan.run.place
