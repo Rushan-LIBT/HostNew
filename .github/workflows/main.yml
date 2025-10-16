@@ -1,9 +1,9 @@
-name: 🚀 Deploy HTML site to Lightsail via SSH
+name: 🚀 Deploy Website to Lightsail via SSH
 
 on:
   push:
     branches:
-      - main   # Runs when you push to the main branch
+      - main   # Automatically deploy when pushing to main branch
 
 jobs:
   deploy:
@@ -13,18 +13,17 @@ jobs:
       - name: 🧩 Checkout repository
         uses: actions/checkout@v4
 
-      - name: ⚙️ Upload files to Lightsail via SCP
+      - name: ⚙️ Upload website files to Lightsail
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: 13.229.36.76               # Your Lightsail public static IP
-          username: ubuntu                 # Default username for Ubuntu Lightsail
-          key: ${{ secrets.SSH_KEY }}      # Private key stored in GitHub Secrets
+          host: 13.229.36.76                         # Your Lightsail public static IP
+          username: ubuntu                           # Default Ubuntu user
+          key: ${{ secrets.RUSHAN_SECRCT }}          # Your secret PEM key name
           port: 22
-          source: "./"                     # Folder or files to upload (e.g. ./dist or ./build)
-          target: "/var/www/html"          # Remote directory where your site lives
+          source: "./"                               # Folder or files to upload
+          target: "/www/wwwroot/rushan.run.place"    # Your website path on the server
           overwrite: true
-          rm: false                        # Do not remove existing files unless you want a clean slate
+          rm: false                                  # Keep existing files (set true for clean deploy)
 
-      - name: ✅ Verify deployment
-        run: |
-          echo "Deployed successfully to 13.229.36.76"
+      - name: ✅ Deployment Complete
+        run: echo "✅ Successfully deployed to /www/wwwroot/rushan.run.place"
