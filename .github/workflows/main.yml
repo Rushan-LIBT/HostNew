@@ -10,19 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Checkout repo
+    # 1️⃣ Checkout repository
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 2️⃣ Copy files to server
+    # 2️⃣ Setup Node.js (if you have a Node project)
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'   # or your required Node version
+
+    # 3️⃣ Install dependencies
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./HostNew    # <-- folder containing package.json
+
+    # 4️⃣ Build project (optional)
+    - name: Build project
+      run: npm run build
+      working-directory: ./HostNew
+
+    # 5️⃣ Deploy via SCP
     - name: Deploy via SCP
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: ${{ secrets.SERVER_IP }}        # <-- Your server IP
-        username: ubuntu                      # <-- server username
-        key: ${{ secrets.RUSHAN_SECRET }}     # <-- Your private key from GitHub secrets
+        host: ${{ secrets.SERVER_IP }}        # Your server IP
+        username: ubuntu                      # Server username
+        key: ${{ secrets.RUSHAN_SECRET }}     # Private key stored in GitHub secrets
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}  # Optional, if key is encrypted
         port: 22
-        source: "./*.html,./README.md"        # <-- deploy HTML and README files
-        target: "/home/ubuntu/HostNew"        # <-- server target folder
-        rm: true                              # remove existing files before copy
-
+        source: "./HostNew/dist/*"            # <-- change to your build output folder
+        target: "/home/ubuntu/HostNew"        # Server target folder
+        rm: true                              # Remove existing files before copy
