@@ -13,29 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Clean target directory
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Deploy to server using rsync
+        uses: burnett01/rsync-deployments@7.0.1
         with:
-          host: 13.229.36.76
-          username: root
-          key: ${{ secrets.RUSHAN_SECRCT }}
-          port: 22
-          script: |
-            # Clean the target directory but keep the folder
-            rm -rf /www/wwwroot/rushan.run.place/*
-            rm -rf /www/wwwroot/rushan.run.place/.[!.]*
-            echo "Target directory cleaned"
-
-      - name: Copy all files to aaPanel server via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: 13.229.36.76
-          username: root
-          key: ${{ secrets.RUSHAN_SECRCT }}
-          port: 22
-          source: "*"
-          target: "/www/wwwroot/rushan.run.place/"
-          overwrite: true
+          switches: -avzr --delete --exclude='.git*' --exclude='README.md'
+          path: ./
+          remote_path: /www/wwwroot/rushan.run.place/
+          remote_host: 13.229.36.76
+          remote_user: root
+          remote_key: ${{ secrets.RUSHAN_SECRCT }}
 
       - name: Set correct permissions
         uses: appleboy/ssh-action@v1.0.3
