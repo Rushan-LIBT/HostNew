@@ -1,4 +1,4 @@
-name: Node.js Build & Deploy
+name: Deploy Static Site
 
 on:
   push:
@@ -14,21 +14,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 2️⃣ Setup Node.js
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-
-    # 3️⃣ Install dependencies
-    - name: Install dependencies
-      run: npm install
-
-    # 4️⃣ Build project
-    - name: Build project
-      run: npm run build
-
-    # 5️⃣ Copy files to server
+    # 2️⃣ Copy files to server
     - name: Deploy via SCP
       uses: appleboy/scp-action@v0.1.7
       with:
@@ -36,18 +22,7 @@ jobs:
         username: ubuntu                      # <-- server username
         key: ${{ secrets.RUSHAN_SECRET }}     # <-- Your private key from GitHub secrets
         port: 22
-        source: "./dist/**"                   # <-- adjust to your build folder
+        source: "./*.html,./README.md"        # <-- deploy HTML and README files
         target: "/home/ubuntu/HostNew"        # <-- server target folder
         rm: true                              # remove existing files before copy
 
-    # 6️⃣ Optional: SSH command after deploy
-    - name: Run remote command
-      uses: appleboy/ssh-action@v0.1.7
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ubuntu
-        key: ${{ secrets.RUSHAN_SECRET }}
-        port: 22
-        script: |
-          cd /home/ubuntu/HostNew
-          pm2 restart all || pm2 start npm --name "HostNew" -- start
