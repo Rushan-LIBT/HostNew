@@ -23,12 +23,10 @@ jobs:
     # 3️⃣ Install dependencies
     - name: Install dependencies
       run: npm install
-      working-directory: ./HostNew  # <-- change this if your package.json is elsewhere
 
     # 4️⃣ Build project
     - name: Build project
       run: npm run build
-      working-directory: ./HostNew
 
     # 5️⃣ Copy files to server
     - name: Deploy via SCP
@@ -38,7 +36,7 @@ jobs:
         username: ubuntu                      # <-- server username
         key: ${{ secrets.RUSHAN_SECRET }}     # <-- Your private key from GitHub secrets
         port: 22
-        source: "./HostNew/dist/**"           # <-- adjust to your build folder
+        source: "./dist/**"                   # <-- adjust to your build folder
         target: "/home/ubuntu/HostNew"        # <-- server target folder
         rm: true                              # remove existing files before copy
 
