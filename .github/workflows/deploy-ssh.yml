@@ -1,0 +1,42 @@
+name: Deploy to Server via SSH
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy all files to aaPanel server via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 13.229.36.76
+          username: root
+          key: ${{ secrets.RUSHAN_SECRCT }}
+          port: 22
+          source: "*"
+          target: "/www/wwwroot/rushan.run.place/"
+          overwrite: true
+          rm: true
+
+      - name: Set correct permissions
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 13.229.36.76
+          username: root
+          key: ${{ secrets.RUSHAN_SECRCT }}
+          port: 22
+          script: |
+            # Set proper permissions for aaPanel
+            cd /www/wwwroot/rushan.run.place/
+            chown -R www:www .
+            find . -type f -exec chmod 644 {} \;
+            find . -type d -exec chmod 755 {} \;
+            echo "Deployment completed successfully!"
+            echo "All files deployed to /www/wwwroot/rushan.run.place/"
